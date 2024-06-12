@@ -42,47 +42,15 @@ def main(
         model_dir: Annotated[str, typer.Argument(help='')],
 ):
     messages = [
-        {
-            "role": "system", "content": "",
-            "tools":
-                [
-                    {
-                        "type": "function",
-                        "function": {
-                            "name": "create_calendar_event",
-                            "description": "Create a new calendar event",
-                            "parameters": {
-                                "type": "object",
-                                "properties": {
-                                    "title": {
-                                        "type": "string",
-                                        "description": "The title of the event"
-                                    },
-                                    "start_time": {
-                                        "type": "string",
-                                        "description": "The start time of the event in the format YYYY-MM-DD HH:MM"
-                                    },
-                                    "end_time": {
-                                        "type": "string",
-                                        "description": "The end time of the event in the format YYYY-MM-DD HH:MM"
-                                    }
-                                },
-                                "required": [
-                                    "title",
-                                    "start_time",
-                                    "end_time"
-                                ]
-                            }
-                        }
-                    }
-                ]
-
+        {"role":"system",
+        "content":'仅从这段input文字，按这些标准，以一个JSON dictionary的结构，每个key是一个问题，把该key的<answer>替换为结构化提取的字符串答案，未提及或未知的答案以null来表示。直接展示JSON结构，不要其他说明：{"用药频次？只输出这些选项的其中之一：qd, bid或q12h。": "<answer/>","次剂量？输出数值。": "<answer/>","日剂量？输出数值。": "<answer/>","给药途径？只输出这些选项的其中之一：口服, 持续静脉泵入, 静推或动脉给药。": "<answer/>","泵入速度？输出数值。": "<answer/>"}'
         },
-        {
-            "role": "user",
-            "content": "Can you help me create a calendar event for my meeting tomorrow? The title is \"Team Meeting\". It starts at 10:00 AM and ends at 11:00 AM."
-        },
-    ]
+        {"role":"user",
+        "content": '<input>替格瑞洛片 62mg 口服 3/日</input>'},
+        # {"role":"assistant",
+        #  "content": '{"用药频次？只输出这些选项的其中之一：qd, bid或q12h。": "bid","次剂量？输出数值。": 45,"日剂量？输出数值。": 90,"给药途径？只输出这些选项的其中之一：口服, 持续静脉泵入, 静推或动脉给药。": "口服","泵入速度？输出数值。": null}'
+        #  }
+        ]
     model, tokenizer = load_model_and_tokenizer(model_dir)
     inputs = tokenizer.apply_chat_template(
         messages,

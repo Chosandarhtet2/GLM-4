@@ -1,15 +1,15 @@
 data_config:
-  train_file: train.jsonl
-  val_file: dev.jsonl
-  test_file: dev.jsonl
+  train_file: Train.jsonl
+  val_file: Val.jsonl
+  test_file: Test.jsonl
   num_proc: 1
 max_input_length: 512
 max_output_length: 512
 training_args:
   # see `transformers.Seq2SeqTrainingArguments`
   output_dir: ./output
-  #max_steps: 3000
-  num_train_epochs = 1
+  max_steps: 60
+  #num_train_epochs = 1
   # needed to be fit for the dataset
   learning_rate: 5e-4
   # settings for data loading
@@ -18,7 +18,7 @@ training_args:
   remove_unused_columns: false
   # settings for saving checkpoints
   save_strategy: steps
-  save_steps: 500
+  save_steps: 30
   # settings for logging
   log_level: info
   logging_strategy: steps
@@ -26,7 +26,7 @@ training_args:
   # settings for evaluation
   per_device_eval_batch_size: 4
   evaluation_strategy: steps
-  eval_steps: 500
+  eval_steps: 20
   # settings for optimizer
   # adam_epsilon: 1e-6
   # uncomment the following line to detect nan or inf values
